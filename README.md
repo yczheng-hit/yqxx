@@ -8,6 +8,10 @@
 
 本项目为命令行填报哈尔滨工业大学[学工平台](https://xg.hit.edu.cn/)[每日上报](https://xg.hit.edu.cn/zhxy-xgzs/xg_yqglxs/xsmrsb)的工具。实现了[统一身份认证登录](http://ids.hit.edu.cn/authserver/login)、获取所有上报信息、按照配置文件自动上报功能。
 
+## 修改
+采用github actions自动上报，删除原有cli工具(不做后续开发不用了ww)，增加requirements.txt里的hitutil
+修改部分代码，修改命令行参数，可以从命令行输入，不用把密码保存在外面公有库
+
 ## 如何使用
 
 0. `pip install yqxx`

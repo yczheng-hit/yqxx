@@ -28,13 +28,32 @@ def read_config(filename: str) -> Tuple[str, str, str]:
         logger.error('Fail to parse YAML')
     sys.exit(1)
 
+def read_config_nopassword(filename: str) -> Tuple[str, str]:
+    try:
+        logger.info("Reading config from %s", filename)
+        o = open(filename, 'r', encoding='utf-8')
+        c = yaml.load(o, Loader=yaml.SafeLoader)
+        for k in c:
+            c[k] = str(c[k])
+        ret = (c['username'], c['gnxxdz'])
+        logger.debug(ret)
+        return ret
+    except OSError:
+        logger.error('Fail to read configuration from %s', filename)
+    except yaml.YAMLError:
+        logger.error('Fail to parse YAML')
+    sys.exit(1)
+
 
 def main():
     parser = argparse.ArgumentParser(
         prog='yqxx', description='Auto submitter for xg.hit.edu.cn yqxx')
     parser.add_argument('-c', '--conf-file',
-                        help='Set config file path',
-                        required=True)
+                        help='Set config file path')
+    parser.add_argument('-p', '--password',
+                        help='Set config file path')
+    parser.add_argument('-u', '--username',
+                        help='Set config file path')
     parser.add_argument('-d', '--debug',
                         help='Set debug mode on',
                         action='store_true')
@@ -46,7 +65,12 @@ def main():
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=logging.INFO)
-    (username, password, gnxxdz) = read_config(args.conf_file)
+    if args.conf_file:
+        (username, password, gnxxdz) = read_config(args.conf_file)
+    gnxxdz = '黑龙江省哈尔滨市西大直街92号哈尔滨工业大学'
+    username = args.username
+    password = args.password
+    
     logger.info('Logging in to xg.hit.edu.cn')
     try:
         s = idslogin(username, password)
