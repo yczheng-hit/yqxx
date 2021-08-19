@@ -49,9 +49,18 @@ def read_config(filename: str) -> Tuple[str, str, str]:
         o = open(filename, 'r', encoding='utf-8')
         c = yaml.load(o, Loader=yaml.SafeLoader)
         ret = {}
-        restricted_keys = ["gpsjd","gpswd","jzdz","kzl1","kzl2","kzl3","kzl4","kzl5","kzl6","kzl7","kzl8","kzl9","kzl10","kzl11","kzl12","kzl13","kzl14","kzl15","kzl16","kzl17","kzl18","kzl19","kzl20","kzl21","kzl22","kzl23","kzl24","kzl25","kzl26","kzl27","kzl28","kzl29","kzl30","kzl31","kzl32","kzl33","kzl34"]
+        restricted_keys = ["gpsjd","gpswd","jzdz","kzl1","kzl2","kzl3","kzl4","kzl5","kzl6","kzl7","kzl8","kzl9","kzl10","kzl11","kzl12","kzl13","kzl14","kzl15","kzl16","kzl17","kzl18","kzl19","kzl20","kzl21","kzl22","kzl23","kzl24","kzl25","kzl26","kzl27","kzl28","kzl29","kzl30","kzl31","kzl32","kzl33"]
         for k in restricted_keys:
             ret[k] = str(c[k])
+        ret["kzl34"] = {}
+        if "kzl38" not in c:
+            ret["kzl38"] = ret["kzl6"]
+            ret["kzl39"] = ret["kzl7"]
+            ret["kzl40"] = ret["kzl8"]
+        else:
+            ret["kzl38"] = str(c["kzl38"])
+            ret["kzl39"] = str(c["kzl39"])
+            ret["kzl40"] = str(c["kzl40"])
         ret = (c['username'], c['password'], ret)
         return ret
     except OSError:
@@ -114,12 +123,24 @@ def main():
     s.headers.update({
         'User-Agent': ua
     })
-    r = s.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/shsj/common')
+    s.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/shsj/loginChange', headers={
+        'Referer': 'https://xg.hit.edu.cn/'
+    })
+    r = s.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/shsj/common', headers={
+        'Referer': 'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/shsj/loginChange'
+    })
     _ = urllib.parse.urlparse(r.url)
     if _.hostname != 'xg.hit.edu.cn':
         logger.error('Login failed')
         sys.exit(1)
     logger.info('Login success')
+
+    r = s.post('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsHome/getZnx', headers={
+        'Referer': 'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsHome'
+    })
+    r.encoding = r.apparent_encoding
+    j = json.loads(r.text)
+    Znx = len(j['module'])
     data = {
         'info': json.dumps({
             "model": data
@@ -127,15 +148,20 @@ def main():
     }
     logger.debug("data: %s", data['info'])
     r = s.post(
-        'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew/save', data=data)
+        'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew/save', data=data, headers={
+            'Referer': 'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew'
+        })
     logger.debug(r.text)
     j = json.loads(r.text)
     logger.debug(j)
     if j['isSuccess']:
-        logger.info("saveYqxx: Success")
+        logger.info("save: Success")
     else:
-        logger.error("saveYqxx: Failed")
-        sys.exit(1)
+        logger.error("save: Failed")
+        exit(1)
+    if Znx != 0:
+        logger.error('您有未阅读的消息，请尽快阅读。')
+        exit(1)
     return
 
 

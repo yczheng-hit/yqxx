@@ -130,7 +130,7 @@ kzl17: 1
 # 2 干咳（Dry cough）
 # 3 呼吸困难（Difficulty in breathing）
 # 4 其他（Other symptoms）
-kzl18: 0
+kzl18: '0;'
 
 # 是否到相关医院或门诊检查（Did you go to a hospital or clinic for a check-up?)
 # 0 否
@@ -142,9 +142,6 @@ kzl19: ''
 # 1 确诊感染（Infected）
 # 2 其他（Others）
 kzl20: ''
-
-# 其他（Others）
-kzl34: ''
 
 # 自行采取的救护措施？（Has any medications been taken by oneself?）
 # 0 已口服药物，无其他异常(Already took oarl medication, no other symptoms)
@@ -206,6 +203,12 @@ kzl32: 0
 
 # 其他信息（Other information）
 kzl33: '无'
+# 省(名称)
+kzl38: '黑龙江省'
+# 市(名称)
+kzl39: '哈尔滨市'
+# 区(名称)
+kzl40: '南岗区'
 ```
 
 ## 开源许可证
