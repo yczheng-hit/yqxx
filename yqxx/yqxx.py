@@ -110,6 +110,7 @@ def main():
     username = args.username
     password = args.password
     logger.info('Logging in to xg.hit.edu.cn')
+    logger.info('username: %s', username)
     try:
         s = idslogin(username, password)
     except Exception as e:
@@ -135,21 +136,21 @@ def main():
         sys.exit(1)
     logger.info('Login success')
 
-    r = s.post('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsHome/getZnx', headers={
-        'Referer': 'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsHome'
+    r = s.post('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/getToken', headers={
+        'Referer': 'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew/edit'
     })
-    r.encoding = r.apparent_encoding
-    j = json.loads(r.text)
-    Znx = len(j['module'])
+    # r.encoding = r.apparent_encoding
+    token = r.text
     data = {
         'info': json.dumps({
-            "model": data
+            "model": data,
+            "token": token
         })
     }
     logger.debug("data: %s", data['info'])
     r = s.post(
         'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew/save', data=data, headers={
-            'Referer': 'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew'
+            'Referer': 'https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsMrsbNew/edit'
         })
     logger.debug(r.text)
     j = json.loads(r.text)
@@ -159,9 +160,9 @@ def main():
     else:
         logger.error("save: Failed")
         exit(1)
-    if Znx != 0:
-        logger.error('您有未阅读的消息，请尽快阅读。')
-        exit(1)
+    # if Znx != 0:
+    #     logger.error('您有未阅读的消息，请尽快阅读。')
+    #     exit(1)
     return
 
 
