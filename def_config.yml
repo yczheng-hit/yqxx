@@ -150,7 +150,7 @@ kzl28: 0
 # 是否与确诊病例、无症状感染者乘坐同次航班和列车（Has a confirmed or asymptomatic case  been detected in same transportation with you）
 # 0 否（No）
 # 1 是（Yes）
-kzl29: 0
+kzl29: ''
 
 # 请详细说明（Please specify）
 kzl30: ''
@@ -168,9 +168,19 @@ kzl32: 2
 
 # 其他信息（Other information）
 kzl33: '无'
+
+kzl34: {}
 # 省(名称)
 kzl38: '黑龙江省'
 # 市(名称)
 kzl39: '哈尔滨市'
 # 区(名称)
 kzl40: '南岗区'
+
+# 今日龙江健康码的码色
+# 0 绿码
+# 1 黄码
+# 2 红码
+kzl41: 0
+
+kzl42: ''
