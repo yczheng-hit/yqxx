@@ -49,7 +49,9 @@ def read_config(filename: str) -> Tuple[str, str, str]:
         o = open(filename, 'r', encoding='utf-8')
         c = yaml.load(o, Loader=yaml.SafeLoader)
         ret = {}
-        restricted_keys = ["gpsjd","gpswd","jzdz","kzl1","kzl2","kzl3","kzl4","kzl5","kzl6","kzl7","kzl8","kzl9","kzl10","kzl11","kzl12","kzl13","kzl14","kzl15","kzl16","kzl17","kzl18","kzl19","kzl20","kzl21","kzl22","kzl23","kzl24","kzl25","kzl26","kzl27","kzl28","kzl29","kzl30","kzl31","kzl32","kzl33"]
+        restricted_keys = ["gpsjd","gpswd","jzdz","kzl1","kzl2","kzl3","kzl4","kzl5","kzl6","kzl7","kzl8","kzl9","kzl10","kzl11","kzl12","kzl13", \
+            "kzl14","kzl15","kzl16","kzl17","kzl18","kzl19","kzl20","kzl21","kzl22","kzl23","kzl24","kzl25","kzl26","kzl27","kzl28","kzl29","kzl30", \
+            "kzl31","kzl32","kzl33","kzl34","kzl38","kzl39","kzl40","kzl41","kzl42"]
         for k in restricted_keys:
             ret[k] = str(c[k])
         ret["kzl34"] = {}
@@ -95,6 +97,18 @@ def main():
                         help='Set config file path')
     parser.add_argument('-u', '--username',
                         help='Set config file path')
+    parser.add_argument('--gpsjd',
+                        help='Set gps longitude')
+    parser.add_argument('--gpswd',
+                        help='Set gps latitude')
+    parser.add_argument('--kzl6',
+                        help='Set province')
+    parser.add_argument('--kzl7',
+                        help='Set city')
+    parser.add_argument('--kzl8',
+                        help='Set district')
+    parser.add_argument('--kzl9',
+                        help='Set address')
     parser.add_argument('-d', '--debug',
                         help='Set debug mode on',
                         action='store_true')
@@ -109,6 +123,17 @@ def main():
     (username, password, data) = read_config(args.conf_file)
     username = args.username
     password = args.password
+    data['gpsjd'] = args.gpsjd
+    data['gpswd'] = args.gpswd
+    data['kzl6'] = args.kzl6
+    data['kzl7'] = args.kzl7
+    data['kzl8'] = args.kzl8
+    data['kzl9'] = args.kzl9
+    data['kzl10'] = args.kzl6 + args.kzl7 + args.kzl8 + args.kzl9
+
+    data['kzl38'] = args.kzl6
+    data['kzl39'] = args.kzl7
+    data['kzl40'] = args.kzl8
     logger.info('Logging in to xg.hit.edu.cn')
     logger.info('username: %s', username)
     try:
@@ -160,9 +185,9 @@ def main():
     else:
         logger.error("save: Failed")
         exit(1)
-    # if Znx != 0:
-    #     logger.error('您有未阅读的消息，请尽快阅读。')
-    #     exit(1)
+    if Znx != 0:
+        logger.error('您有未阅读的消息，请尽快阅读。')
+        exit(1)
     return
 
 

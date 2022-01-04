@@ -8,6 +8,8 @@
 
 本项目为命令行填报哈尔滨工业大学[学工平台](https://xg.hit.edu.cn/)[每日上报](https://xg.hit.edu.cn/zhxy-xgzs/xg_yqglxs/xsmrsb)的工具。实现了[统一身份认证登录](http://ids.hit.edu.cn/authserver/login)、获取所有上报信息、按照配置文件自动上报功能。
 
+## 2022.01 更新
+放假回家，不能把详细地址写到公共仓库里，把这部分参数也加到了项目的Secrets中，具体为*GPSJD, GPSWD, PROVINCE, CITY, DISTRICT, ADDRESS*，分别存放*经度，维度，省，市，区，详细地址*，实例可参考下方的def_conf.yml，Secrets设置方法见下方。
 ## 修改
 *之前在自己私有库上跑的，密码也不会泄露但是不方便分享*
 采用github actions自动上报，删除原有cli工具(不做后续开发不用了ww)，增加requirements.txt里的hitutil

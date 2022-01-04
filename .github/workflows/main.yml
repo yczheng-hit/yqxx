@@ -33,5 +33,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          python3 yqxx/yqxx.py -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }} -c def_config.yml
+          python3 yqxx/yqxx.py -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }} -c def_config.yml --gpsjd ${{ secrets.GPSJD }} \
+            --gpswd ${{ secrets.GPSWD }} --kzl6 ${{ secrets.PROVINCE }} --kzl7 ${{ secrets.CITY }} --kzl8 ${{ secrets.DISTRICT }} \
+            --kzl9 ${{ secrets.ADDRESS }} 
           
